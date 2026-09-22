@@ -76,7 +76,7 @@ export default function HeroSection() {
               </span>
             </a>
             <a
-              href="#how"
+              href="https://github.com/NikclasTech/nikclas"
               className="inline-flex items-center gap-2 rounded-md border border-[#22304f] bg-[#0c1429]/60 px-5 py-3 font-mono text-sm text-[#eaf0fb] transition-colors duration-200 hover:border-[#4de3ff]/60 hover:text-[#4de3ff]"
             >
               $ go to gh
