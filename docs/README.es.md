@@ -180,6 +180,15 @@ restaura los datos en vivo sin cambiar ningun componente.
 Las velocidades medias de las fichas son valores estaticos
 orientativos; precios y contexto son los campos en vivo.
 
+### Actualizaciones automaticas
+
+No hay base de datos: `data/pricing.json` es el dataset actual y
+`git log -- data/pricing.json` es el historico. Cada 6 horas el workflow
+`pricing-update` ejecuta el collector, valida y abre un pull request si
+hay cambios (nunca escribe directo en `main`); saltos de 3x o mas se
+marcan `[possible-anomaly]`. Mira [CONTRIBUTING.md](../CONTRIBUTING.md)
+para contribuir, incluido como anadir un proveedor.
+
 ## 7. Scripts disponibles
 
 | Comando         | Descripcion                              |

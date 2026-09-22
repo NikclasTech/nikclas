@@ -1,0 +1,210 @@
+[
+  {
+    "model": "gpt-4o-mini",
+    "type": "input",
+    "price_per_1m": 0.15,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/gpt-4o-mini",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "gpt-4o-mini",
+    "type": "output",
+    "price_per_1m": 0.6,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/gpt-4o-mini",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "deepseek-chat",
+    "type": "input",
+    "price_per_1m": 0.28,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/deepseek-chat",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "deepseek-chat",
+    "type": "output",
+    "price_per_1m": 0.42,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/deepseek-chat",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "deepseek-v4-flash",
+    "type": "input",
+    "price_per_1m": 0.3,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/deepseek-v4-flash",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "deepseek-v4-flash",
+    "type": "output",
+    "price_per_1m": 1.2,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/deepseek-v4-flash",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "gemini-2.5-flash-lite",
+    "type": "input",
+    "price_per_1m": 0.1,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/gemini-2.5-flash-lite",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "gemini-2.5-flash-lite",
+    "type": "output",
+    "price_per_1m": 0.4,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/gemini-2.5-flash-lite",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "gpt-5.6-luna",
+    "type": "input",
+    "price_per_1m": 0.2,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/gpt-5.6-luna",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "gpt-5.6-luna",
+    "type": "output",
+    "price_per_1m": 1.2,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/gpt-5.6-luna",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "zai/glm-5.3",
+    "type": "input",
+    "price_per_1m": 1.4,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/zai%2Fglm-5.3",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "zai/glm-5.3",
+    "type": "output",
+    "price_per_1m": 4.4,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/zai%2Fglm-5.3",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "xai/grok-4.5",
+    "type": "input",
+    "price_per_1m": 2,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/xai%2Fgrok-4.5",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "xai/grok-4.5",
+    "type": "output",
+    "price_per_1m": 6,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/xai%2Fgrok-4.5",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "gpt-4o",
+    "type": "input",
+    "price_per_1m": 2.5,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/gpt-4o",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "gpt-4o",
+    "type": "output",
+    "price_per_1m": 10,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/gpt-4o",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "claude-sonnet-4-6",
+    "type": "input",
+    "price_per_1m": 3,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/claude-sonnet-4-6",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "claude-sonnet-4-6",
+    "type": "output",
+    "price_per_1m": 15,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/claude-sonnet-4-6",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "moonshot/kimi-k3",
+    "type": "input",
+    "price_per_1m": 3,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/moonshot%2Fkimi-k3",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "moonshot/kimi-k3",
+    "type": "output",
+    "price_per_1m": 15,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/moonshot%2Fkimi-k3",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "claude-fable-5-1",
+    "type": "input",
+    "price_per_1m": 10,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/claude-fable-5-1",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "claude-fable-5-1",
+    "type": "output",
+    "price_per_1m": 50,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/claude-fable-5-1",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "gpt-6-astra",
+    "type": "input",
+    "price_per_1m": 10,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/gpt-6-astra",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "gpt-6-astra",
+    "type": "output",
+    "price_per_1m": 50,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/gpt-6-astra",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "claude-opus-4-1",
+    "type": "input",
+    "price_per_1m": 15,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/claude-opus-4-1",
+    "updated_at": "2026-09-22"
+  },
+  {
+    "model": "claude-opus-4-1",
+    "type": "output",
+    "price_per_1m": 75,
+    "currency": "USD",
+    "source": "https://api.litellm.ai/model_catalog/claude-opus-4-1",
+    "updated_at": "2026-09-22"
+  }
+]

@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import modelsData from "../../data/models.json";
+import pricingData from "../../data/pricing.json";
 
 /* Data layer: live pricing from the LiteLLM Model Catalog API.
    GET https://api.litellm.ai/model_catalog/{model_id} returns per-token
@@ -45,22 +47,42 @@ export const MODELS: StaticSpec[] = [
   { id: "claude-opus-4-1", name: "claude-opus-4-1", vendor: "anthropic", speed: "31 tok/s" },
 ];
 
-/** Bundled snapshot — verified against the API on 2026-09-22. */
-export const FALLBACK_PRICES: Record<string, LivePrice> = {
-  "gpt-4o-mini": { input: 0.15, output: 0.6, maxInputTokens: 128000, provider: "openai" },
-  "deepseek-chat": { input: 0.28, output: 0.42, maxInputTokens: 131072, provider: "deepseek" },
-  "deepseek-v4-flash": { input: 0.3, output: 1.2, maxInputTokens: 1000000, provider: "deepseek" },
-  "gemini-2.5-flash-lite": { input: 0.1, output: 0.4, maxInputTokens: 1048576, provider: "vertex_ai-language-models" },
-  "gpt-5.6-luna": { input: 0.2, output: 1.2, maxInputTokens: 922000, provider: "openai" },
-  "zai/glm-5.3": { input: 1.4, output: 4.4, maxInputTokens: 1000000, provider: "zai" },
-  "xai/grok-4.5": { input: 2.0, output: 6.0, maxInputTokens: 500000, provider: "xai" },
-  "gpt-4o": { input: 2.5, output: 10.0, maxInputTokens: 128000, provider: "openai" },
-  "claude-sonnet-4-6": { input: 3.0, output: 15.0, maxInputTokens: 1000000, provider: "anthropic" },
-  "moonshot/kimi-k3": { input: 3.0, output: 15.0, maxInputTokens: 1048576, provider: "moonshot" },
-  "claude-fable-5-1": { input: 10.0, output: 50.0, maxInputTokens: 1000000, provider: "anthropic" },
-  "gpt-6-astra": { input: 10.0, output: 50.0, maxInputTokens: 922000, provider: "openai" },
-  "claude-opus-4-1": { input: 15.0, output: 75.0, maxInputTokens: 200000, provider: "anthropic" },
+type DataModelRow = {
+  id: string;
+  name: string;
+  provider: string;
+  context_tokens: number;
 };
+
+type DataPricingRow = {
+  model: string;
+  type: string;
+  price_per_1m: number;
+  currency: string;
+  source: string;
+  updated_at: string;
+};
+
+/** Bundled snapshot built from data/pricing.json + data/models.json, so
+ *  the versioned dataset is the single source of truth (updated by the
+ *  pricing collector, history via git log). */
+function buildFallback(): Record<string, LivePrice> {
+  const models = modelsData as DataModelRow[];
+  const pricing = pricingData as DataPricingRow[];
+  const byKey = new Map(pricing.map((r) => [`${r.model}|${r.type}`, r.price_per_1m]));
+  const out: Record<string, LivePrice> = {};
+  for (const m of models) {
+    out[m.id] = {
+      input: byKey.get(`${m.id}|input`) ?? 0,
+      output: byKey.get(`${m.id}|output`) ?? 0,
+      maxInputTokens: m.context_tokens,
+      provider: m.provider,
+    };
+  }
+  return out;
+}
+
+export const FALLBACK_PRICES: Record<string, LivePrice> = buildFallback();
 
 type CatalogEntry = {
   input_cost_per_token: number | null;

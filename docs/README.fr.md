@@ -182,6 +182,16 @@ composant.
 Les vitesses medianes des fiches sont des valeurs statiques
 indicatives ; prix et contexte sont les champs en direct.
 
+### Mises a jour automatiques
+
+Pas de base de donnees : `data/pricing.json` est le jeu actuel et
+`git log -- data/pricing.json` en est l'historique. Toutes les 6 heures
+le workflow `pricing-update` execute le collector, valide et ouvre une
+pull request en cas de changement (jamais d'ecriture directe sur
+`main`) ; les bonds de 3x ou plus sont marques `[possible-anomaly]`.
+Voir [CONTRIBUTING.md](../CONTRIBUTING.md) pour contribuer, y compris
+l'ajout d'un fournisseur.
+
 ## 7. Scripts disponibles
 
 | Commande        | Description                              |

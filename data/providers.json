@@ -1,0 +1,44 @@
+[
+  {
+    "id": "openai",
+    "name": "OpenAI",
+    "website": "https://openai.com/",
+    "pricing_url": "https://platform.openai.com/docs/pricing"
+  },
+  {
+    "id": "anthropic",
+    "name": "Anthropic",
+    "website": "https://www.anthropic.com/",
+    "pricing_url": "https://www.anthropic.com/pricing"
+  },
+  {
+    "id": "deepseek",
+    "name": "DeepSeek",
+    "website": "https://www.deepseek.com/",
+    "pricing_url": "https://api-docs.deepseek.com/quick_start/pricing"
+  },
+  {
+    "id": "google",
+    "name": "Google",
+    "website": "https://ai.google.dev/",
+    "pricing_url": "https://ai.google.dev/gemini-api/docs/pricing"
+  },
+  {
+    "id": "zai",
+    "name": "z.ai",
+    "website": "https://z.ai/",
+    "pricing_url": null
+  },
+  {
+    "id": "moonshot",
+    "name": "Moonshot AI",
+    "website": "https://www.moonshot.ai/",
+    "pricing_url": null
+  },
+  {
+    "id": "xai",
+    "name": "xAI",
+    "website": "https://x.ai/",
+    "pricing_url": "https://docs.x.ai/"
+  }
+]

@@ -24,7 +24,9 @@ Read this in: [Espanol](docs/README.es.md) | [Francais](docs/README.fr.md) |
 - [5. Getting started](#5-getting-started)
 - [6. Pricing data](#6-pricing-data)
 - [7. Available scripts](#7-available-scripts)
-- [8. License](#8-license)
+- [8. Automation](#8-automation)
+- [9. Contributing](#9-contributing)
+- [10. License](#10-license)
 
 ## 1. Overview
 
@@ -176,6 +178,18 @@ without changing any component.
 Median speeds shown on the cards are indicative static values; prices and
 context windows are the live fields.
 
+### Automated updates
+
+There is no database: `data/pricing.json` is the current dataset and
+`git log -- data/pricing.json` is the price history. Every 6 hours the
+`pricing-update` workflow runs the collector (`npm run collect:pricing`),
+validates the result and opens a pull request titled
+`chore: update AI model pricing` when prices moved — `main` is never
+written to directly. Jumps of 3x or more are kept in the PR but marked
+`[possible-anomaly]` for human review. Source links are re-checked
+weekly by the `link-check` workflow, which opens an issue if a source
+breaks.
+
 ## 7. Available scripts
 
 | Command         | Description                              |
@@ -184,8 +198,32 @@ context windows are the live fields.
 | `npm run build`   | Type-check and build for production      |
 | `npm run preview` | Preview the production build locally     |
 | `npm run lint`    | Run ESLint over the project              |
+| `npm test`        | Run unit tests (vitest)                  |
+| `npm run collect:pricing` | Refresh `data/pricing.json` from live sources |
+| `npm run validate:pricing` | Validate `data/*.json`              |
+| `npm run check:links` | Check pricing source URLs             |
 
-## 8. License
+## 8. Automation
+
+| Workflow | Trigger | What it does |
+| -------- | ------- | ------------ |
+| `ci.yml` | PRs, pushes to `main` | Install, lint, tests, build, data validation |
+| `pricing-update.yml` | Every 6h, manual dispatch | Collector run, validation, pricing PR (never direct to `main`) |
+| `link-check.yml` | Weekly, manual dispatch | Verifies source URLs, opens an issue on breakage |
+| `security.yml` | PRs, pushes to `main`, weekly | CodeQL analysis (JavaScript/TypeScript) |
+
+Dependabot updates npm and GitHub Actions dependencies weekly
+(`.github/dependabot.yml`, no auto-merge). No secrets are required:
+the pricing API needs no key and automation uses the built-in
+`GITHUB_TOKEN` with least-privilege permissions.
+
+## 9. Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md), including how to add a new
+pricing provider (collector, parser, tests, official source,
+validation, pull request).
+
+## 10. License
 
 This project is licensed under the **GNU General Public License v3.0
 or later (GPLv3+)**. See [LICENSE](LICENSE) for the full text.

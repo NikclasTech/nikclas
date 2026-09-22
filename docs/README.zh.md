@@ -169,6 +169,14 @@ npm run preview
 
 卡片上的中位速度为静态参考值；价格与上下文为实时字段。
 
+### 自动更新
+
+没有数据库：`data/pricing.json` 是当前数据集，`git log -- data/pricing.json`
+即价格历史。每 6 小时 `pricing-update` 工作流运行采集器并验证，有变
+化就开 pull request（从不直写 `main`）；3 倍以上的跳变会标为
+`[possible-anomaly]` 人工复核。贡献指南见
+[CONTRIBUTING.md](../CONTRIBUTING.md)，包括如何新增供应商。
+
 ## 7. 可用脚本
 
 | 命令 | 说明 |

@@ -177,6 +177,15 @@ weiterleitet, erhaelt Live-Daten ohne eine Komponente zu aendern.
 Die Median-Tempi auf den Karten sind statische Richtwerte; Preise und
 Kontext sind die Live-Felder.
 
+### Automatische Updates
+
+Keine Datenbank: `data/pricing.json` ist der aktuelle Stand und
+`git log -- data/pricing.json` die Historie. Alle 6 Stunden laeuft der
+`pricing-update`-Workflow (Collector, Validierung, Pull Request bei
+Aenderungen – nie direkt auf `main`); Spruenge ab 3x werden als
+`[possible-anomaly]` markiert. Siehe [CONTRIBUTING.md](../CONTRIBUTING.md),
+auch zum Hinzufuegen eines Anbieters.
+
 ## 7. Verfuegbare Skripte
 
 | Befehl          | Beschreibung                             |

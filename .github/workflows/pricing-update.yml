@@ -1,0 +1,73 @@
+# Automated pricing updates: every 6h (and on demand) the collector
+# refreshes data/pricing.json. Changes land as a pull request, never as
+# a direct push to main. Anomalous jumps get the `pricing-anomaly` label.
+name: Pricing update
+
+on:
+  schedule:
+    # Every 6 hours, off the top of the hour to avoid load spikes.
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+
+      - name: Collect pricing
+        run: npm run collect:pricing
+
+      - name: Validate pricing
+        run: npm run validate:pricing
+
+      - name: Detect changes
+        id: diff
+        run: |
+          if git diff --quiet -- data/; then
+            echo "No changes detected."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Read collector metadata
+        id: meta
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          echo "anomaly=$(jq -r .has_anomaly .pricing-meta.json)" >> "$GITHUB_OUTPUT"
+          echo "count=$(jq -r .change_count .pricing-meta.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Open pull request
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: chore/pricing-update-${{ github.run_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add data/pricing.json
+          git commit -m "chore: update AI model pricing"
+          git push -u origin "$BRANCH"
+          # Reuse the branch PR if this run overlaps a previous one.
+          if gh pr list --head "$BRANCH" --json number --jq length | grep -q '^0$'; then
+            # Anomalies are marked in the title (no extra permissions needed).
+            if [ "${{ steps.meta.outputs.anomaly }}" = "true" ]; then
+              TITLE="[possible-anomaly] chore: update AI model pricing"
+            else
+              TITLE="chore: update AI model pricing"
+            fi
+            gh pr create --title "$TITLE" --body-file pricing-changes.md
+          else
+            echo "A pull request for $BRANCH already exists; updated the branch."
+          fi

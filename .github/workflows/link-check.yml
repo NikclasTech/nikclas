@@ -1,0 +1,46 @@
+# Weekly check that pricing sources are still reachable.
+# Opens (or reuses) an issue when a source breaks.
+name: Link check
+
+on:
+  schedule:
+    # Weekly, Monday morning UTC.
+    - cron: "30 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+
+      - name: Check source links
+        id: check
+        run: |
+          if npm run check:links; then
+            echo "failed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "failed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open tracking issue
+        if: steps.check.outputs.failed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TITLE="Broken pricing source detected"
+          OPEN=$(gh issue list --search "$TITLE in:title state:open" --json number --jq length)
+          if [ "$OPEN" = "0" ]; then
+            gh issue create --title "$TITLE" --body-file link-report.md
+          else
+            echo "An open broken-source issue already exists; skipping."
+          fi
