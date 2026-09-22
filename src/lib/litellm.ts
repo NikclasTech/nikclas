@@ -138,18 +138,18 @@ export type PriceState = {
 
 /** Shared hook — board and comparator both use it; one fetch feeds both. */
 export function useLivePrices(): PriceState {
-  const [state, setState] = useState<PriceState>({
-    status: "loading",
-    prices: FALLBACK_PRICES,
-    updatedAt: null,
+  // Hydrate from cache lazily so the effect body never calls setState
+  // synchronously (react-hooks/set-state-in-effect).
+  const [state, setState] = useState<PriceState>(() => {
+    const cached = readCache();
+    if (cached) {
+      return { status: "stale", prices: cached.prices, updatedAt: cached.savedAt };
+    }
+    return { status: "loading", prices: FALLBACK_PRICES, updatedAt: null };
   });
 
   useEffect(() => {
     let alive = true;
-    const cached = readCache();
-    if (cached) {
-      setState({ status: "stale", prices: cached.prices, updatedAt: cached.savedAt });
-    }
     fetchAllLive()
       .then((prices) => {
         if (!alive) return;
