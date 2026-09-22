@@ -1,0 +1,7 @@
+# Netlify build settings for the Nikclas static site.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "24"
