@@ -1,7 +1,15 @@
-import { fmt, fmtCtx, vendorLabel } from "../../src/lib/format";
+import { fmt, fmtCtx, vendorLabel, websiteForVendor } from "../../src/lib/format";
 import type { LivePrice, StaticSpec } from "../../src/lib/litellm";
+import type { Capabilities } from "../../src/pricing/types";
 
 export type MergedModel = StaticSpec & LivePrice & { barWidth: string };
+
+const DEV_CAPS: { key: keyof Capabilities; label: string }[] = [
+  { key: "function_calling", label: "Functions" },
+  { key: "vision", label: "Vision" },
+  { key: "structured_output", label: "JSON mode" },
+  { key: "prompt_caching", label: "Caching" },
+];
 
 function SpecRow({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
   return (
@@ -22,6 +30,8 @@ function SpecRow({ label, value, accent }: { label: string; value: string; accen
 
 export default function ModelCard({ model, winner, tied }: { model: MergedModel; winner: boolean; tied: boolean }) {
   const tag = tied ? "Tie" : winner ? "Best value" : "Baseline";
+  const site = websiteForVendor(vendorLabel(model.vendor));
+  const hostname = site ? new URL(site).hostname : null;
   return (
     <article
       aria-label={`${model.name} datasheet`}
@@ -74,6 +84,45 @@ export default function ModelCard({ model, winner, tied }: { model: MergedModel;
         <SpecRow label="Context" value={fmtCtx(model.maxInputTokens)} />
         <SpecRow label="Median speed" value={model.speed} />
       </dl>
+
+      <div className="mt-4 border-t border-[#22304f]/70 pt-4">
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#93a0b8]">
+          For developers
+        </p>
+        <ul aria-label={`${model.name} capabilities`} className="mt-2.5 flex flex-wrap gap-1.5">
+          {DEV_CAPS.map(({ key, label }) => {
+            const on = model.capabilities[key];
+            return (
+              <li
+                key={key}
+                title={`${label}: ${on ? "supported" : "not supported"}`}
+                className={`inline-flex items-center gap-1.5 rounded border px-2 py-1 font-mono text-[11px] ${
+                  on
+                    ? "border-[#4de3ff]/40 bg-[#4de3ff]/10 text-[#4de3ff]"
+                    : "border-[#22304f] text-[#93a0b8]/60"
+                }`}
+              >
+                <span
+                  aria-hidden
+                  className={`h-1.5 w-1.5 rounded-full ${on ? "bg-[#4de3ff]" : "bg-[#93a0b8]/40"}`}
+                />
+                {on ? label : `No ${label.toLowerCase()}`}
+              </li>
+            );
+          })}
+        </ul>
+        {site && hostname && (
+          <a
+            href={site}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-3 inline-flex items-center gap-1.5 font-mono text-xs text-[#4de3ff]/80 underline decoration-[#4de3ff]/30 underline-offset-4 transition-colors duration-200 hover:text-[#4de3ff]"
+          >
+            {hostname}
+            <span aria-hidden>↗</span>
+          </a>
+        )}
+      </div>
     </article>
   );
 }

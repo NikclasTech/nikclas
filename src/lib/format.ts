@@ -1,3 +1,4 @@
+import providersData from "../../data/providers.json";
 import type { LivePrice } from "./litellm";
 
 /** Raw provider id from the API -> short label shown in the UI. */
@@ -13,6 +14,36 @@ export const VENDOR_LABEL: Record<string, string> = {
 
 export function vendorLabel(provider: string) {
   return VENDOR_LABEL[provider] ?? provider;
+}
+
+type ProviderSiteRow = {
+  id: string;
+  name: string;
+  website: string;
+};
+
+const PROVIDER_SITES: Record<string, string> = Object.fromEntries(
+  (providersData as ProviderSiteRow[]).map((p) => [p.id, p.website]),
+);
+
+/** Display labels whose id differs from the lowercase label. */
+const LABEL_TO_ID: Record<string, string> = {
+  "z.ai": "zai",
+  kimi: "moonshot",
+};
+
+/** Official website for a vendor display label, e.g. "NVIDIA".
+ *  Tries the raw provider id first, then known aliases, then the label
+ *  itself, so hosted entries (e.g. vertex bills, Google makes) resolve. */
+export function websiteForVendor(label: string): string | null {
+  const byLabel = Object.entries(VENDOR_LABEL).find(([, v]) => v === label);
+  const ids = [byLabel?.[0], LABEL_TO_ID[label], label.toLowerCase()];
+  for (const id of ids) {
+    if (id == null) continue;
+    const site = PROVIDER_SITES[id];
+    if (site) return site;
+  }
+  return null;
 }
 
 /** $ per 1M tokens, e.g. 0.15 -> "$0.15". */
