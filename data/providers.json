@@ -40,5 +40,17 @@
     "name": "xAI",
     "website": "https://x.ai/",
     "pricing_url": "https://docs.x.ai/"
+  },
+  {
+    "id": "nvidia",
+    "name": "NVIDIA",
+    "website": "https://build.nvidia.com/",
+    "pricing_url": null
+  },
+  {
+    "id": "qwen",
+    "name": "Qwen",
+    "website": "https://www.alibabacloud.com/",
+    "pricing_url": null
   }
 ]
