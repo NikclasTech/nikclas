@@ -95,10 +95,23 @@ pricing API directly from the browser.
 │   ├── hero/
 │   │   ├── HeroSection.tsx    # Thesis, CTAs, stats + board layout
 │   │   └── PriceBoard.tsx     # Live price-board console
-│   └── compare/
+│   ├── compare/
 │       ├── CompareSection.tsx # State, savings math, verdict
 │       ├── CompareForm.tsx    # Provider + model selectors, swap
-│       └── ModelCard.tsx      # Model datasheet card
+│       ├── ModelCard.tsx      # Model datasheet card
+│       └── Calculator.tsx     # Monthly cost calculator + ranking
+│   ├── ui/                    # Shared UI primitives
+│   │   ├── Button.tsx         # Primary/ghost/pill, anchor or button
+│   │   ├── Badge.tsx          # BEST/AVOID/value tags
+│   │   ├── Bar.tsx            # Proportional bars
+│   │   ├── SectionHeader.tsx  # Eyebrow + title + lede
+│   │   ├── Field.tsx          # Labelled field wrapper
+│   │   ├── Select.tsx         # Styled native select
+│   │   ├── NumberField.tsx    # Labelled numeric input
+│   │   ├── Stat.tsx           # Definition-list stat
+│   │   ├── StatusDot.tsx      # Live/sync/cached dot
+│   │   ├── ExternalLink.tsx   # Underlined external link
+│   │   └── index.ts           # Barrel exports
 ├── src/
 │   ├── lib/
 │   │   ├── litellm.ts         # Catalog, API client, cache, hook

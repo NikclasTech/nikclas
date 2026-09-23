@@ -90,10 +90,23 @@ l'API publique de prix directement depuis le navigateur.
 │   ├── hero/
 │   │   ├── HeroSection.tsx    # These, CTAs, stats + mise en page
 │   │   └── PriceBoard.tsx     # Console du tableau des prix
-│   └── compare/
+│   ├── compare/
 │       ├── CompareSection.tsx # Etat, calcul de l'economie, verdict
 │       ├── CompareForm.tsx    # Selecteurs fournisseur et modele, echange
-│       └── ModelCard.tsx      # Fiche modele
+│       ├── ModelCard.tsx      # Fiche modele
+│       └── Calculator.tsx     # Calculateur mensuel + classement
+│   ├── ui/                    # Primitives UI partagees
+│   │   ├── Button.tsx         # Primaire/fantome/pilule, lien ou bouton
+│   │   ├── Badge.tsx          # Etiquettes BEST/AVOID/valeur
+│   │   ├── Bar.tsx            # Barres proportionnelles
+│   │   ├── SectionHeader.tsx  # Eyebrow + titre + description
+│   │   ├── Field.tsx          # Champ avec label
+│   │   ├── Select.tsx         # Select natif stylise
+│   │   ├── NumberField.tsx    # Entree numerique avec label
+│   │   ├── Stat.tsx           # Stat de definition
+│   │   ├── StatusDot.tsx      # Point live/sync/cached
+│   │   ├── ExternalLink.tsx   # Lien externe souligne
+│   │   └── index.ts           # Exports
 ├── src/
 │   ├── lib/
 │   │   ├── litellm.ts         # Catalogue, client API, cache, hook

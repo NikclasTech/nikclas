@@ -80,10 +80,23 @@ Nikclas 是一个单页 React 应用，只回答一个问题：哪个 AI 模型�
 │   ├── hero/
 │   │   ├── HeroSection.tsx    # 主张、按钮、统计 + 布局
 │   │   └── PriceBoard.tsx     # 实时价格面板
-│   └── compare/
+│   ├── compare/
 │       ├── CompareSection.tsx # 状态、节省计算、结论
 │       ├── CompareForm.tsx    # 供应商 + 模型选择、交换
-│       └── ModelCard.tsx      # 模型数据卡片
+│       ├── ModelCard.tsx      # 模型数据卡片
+│       └── Calculator.tsx     # 月度费用计算器 + 排名
+│   ├── ui/                    # 共享 UI 基础组件
+│   │   ├── Button.tsx         # 主要/幽灵/胶囊按钮，链接或按钮
+│   │   ├── Badge.tsx          # BEST/AVOID/价值标签
+│   │   ├── Bar.tsx            # 比例条形图
+│   │   ├── SectionHeader.tsx  # 眉题 + 标题 + 导语
+│   │   ├── Field.tsx          # 带标签的表单项
+│   │   ├── Select.tsx         # 统一样式的原生下拉框
+│   │   ├── NumberField.tsx    # 带标签的数字输入
+│   │   ├── Stat.tsx           # 定义列表统计
+│   │   ├── StatusDot.tsx      # 实时/同步/缓存圆点
+│   │   ├── ExternalLink.tsx   # 下划线外链
+│   │   └── index.ts           # 统一导出
 ├── src/
 │   ├── lib/
 │   │   ├── litellm.ts         # 目录、API 客户端、缓存、hook
