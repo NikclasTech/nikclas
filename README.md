@@ -120,18 +120,18 @@ pricing API directly from the browser.
 
 ### Prerequisites
 
-- Node.js 20+ and npm.
+- Bun 1.2+.
 
 ### Install
 
 ```bash
-npm install
+bun install
 ```
 
 ### Run the dev server
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 Open http://localhost:5173/ in your browser.
@@ -139,11 +139,11 @@ Open http://localhost:5173/ in your browser.
 ### Production build
 
 ```bash
-npm run build
-npm run preview
+bun run build
+bun run preview
 ```
 
-`npm run build` type-checks (`tsc -b`) and emits the static site to
+`bun run build` type-checks (`tsc -b`) and emits the static site to
 `dist/`, which can be served by any static host.
 
 ## 6. Pricing data
@@ -195,7 +195,7 @@ context windows are the live fields.
 
 There is no database: `data/pricing.json` is the current dataset and
 `git log -- data/pricing.json` is the price history. Every 6 hours the
-`pricing-update` workflow runs the collector (`npm run collect:pricing`),
+`pricing-update` workflow runs the collector (`bun run collect:pricing`),
 validates the result and opens a pull request titled
 `chore: update AI model pricing` when prices moved — `main` is never
 written to directly. Jumps of 3x or more are kept in the PR but marked
@@ -207,14 +207,14 @@ breaks.
 
 | Command         | Description                              |
 | --------------- | ---------------------------------------- |
-| `npm run dev`     | Start the Vite dev server                |
-| `npm run build`   | Type-check and build for production      |
-| `npm run preview` | Preview the production build locally     |
-| `npm run lint`    | Run ESLint over the project              |
-| `npm test`        | Run unit tests (vitest)                  |
-| `npm run collect:pricing` | Refresh `data/pricing.json` from live sources |
-| `npm run validate:pricing` | Validate `data/*.json`              |
-| `npm run check:links` | Check pricing source URLs             |
+| `bun run dev`     | Start the Vite dev server                |
+| `bun run build`   | Type-check and build for production      |
+| `bun run preview` | Preview the production build locally     |
+| `bun run lint`    | Run ESLint over the project              |
+| `bun test`        | Run unit tests (vitest)                  |
+| `bun run collect:pricing` | Refresh `data/pricing.json` from live sources |
+| `bun run validate:pricing` | Validate `data/*.json`              |
+| `bun run check:links` | Check pricing source URLs             |
 
 ## 8. Automation
 

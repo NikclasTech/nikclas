@@ -5,14 +5,14 @@ the pricing-data system and how to add a new provider.
 
 ## Development setup
 
-Requirements: Node.js 20+ and npm.
+Requirements: Bun 1.2+.
 
 ```bash
-npm install
-npm run dev      # Vite dev server at http://localhost:5173/
-npm test         # unit tests (vitest)
-npm run lint     # ESLint
-npm run build    # typecheck (tsc -b) + production build
+bun install
+bun run dev      # Vite dev server at http://localhost:5173/
+bun test         # unit tests (vitest)
+bun run lint     # ESLint
+bun run build    # typecheck (tsc -b) + production build
 ```
 
 ## Pricing data
@@ -28,14 +28,14 @@ data/
 ```
 
 Every 6 hours the `pricing-update` workflow runs the collector
-(`npm run collect:pricing`), validates the result
-(`npm run validate:pricing`) and opens a pull request titled
+(`bun run collect:pricing`), validates the result
+(`bun run validate:pricing`) and opens a pull request titled
 `chore: update AI model pricing` when something changed. Changes of 3x
 or more are kept in the PR but marked `[possible-anomaly]` in the title
 for human review. `main` is never written to directly.
 
 Source-link health is checked weekly by the `link-check` workflow
-(`npm run check:links`), which opens an issue if a pricing source
+(`bun run check:links`), which opens an issue if a pricing source
 breaks.
 
 ## Adding a new provider
@@ -73,8 +73,8 @@ breaks.
    error).
 7. **Add the official source URL** to `data/providers.json`
    (`pricing_url`) so the link checker covers it.
-8. **Run validation**: `npm run validate:pricing`, `npm test`,
-   `npm run lint`, `npm run build`.
+8. **Run validation**: `bun run validate:pricing`, `bun test`,
+   `bun run lint`, `bun run build`.
 9. **Open a pull request.** CI runs lint, tests, build and data
    validation on every PR.
 
@@ -83,4 +83,4 @@ breaks.
 - Keep changes focused; one topic per PR.
 - Never commit directly to `main`; the pricing bot follows the same rule.
 - Use conventional titles (`feat:`, `fix:`, `chore:`, `docs:`).
-- Make sure `npm run lint`, `npm test` and `npm run build` pass locally.
+- Make sure `bun run lint`, `bun test` and `bun run build` pass locally.

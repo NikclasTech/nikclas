@@ -111,18 +111,18 @@ oeffentliche Preis-API direkt aus dem Browser aufruft.
 
 ### Voraussetzungen
 
-- Node.js 20+ und npm.
+- Bun 1.2+.
 
 ### Installation
 
 ```bash
-npm install
+bun install
 ```
 
 ### Dev-Server
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 http://localhost:5173/ im Browser oeffnen.
@@ -130,11 +130,11 @@ http://localhost:5173/ im Browser oeffnen.
 ### Produktions-Build
 
 ```bash
-npm run build
-npm run preview
+bun run build
+bun run preview
 ```
 
-`npm run build` prueft Typen (`tsc -b`) und erzeugt die statische Seite
+`bun run build` prueft Typen (`tsc -b`) und erzeugt die statische Seite
 in `dist/`, ablegbar auf jedem Static-Hoster.
 
 ## 6. Preisdaten
@@ -195,10 +195,10 @@ auch zum Hinzufuegen eines Anbieters.
 
 | Befehl          | Beschreibung                             |
 | --------------- | ---------------------------------------- |
-| `npm run dev`     | Vite-Dev-Server starten                  |
-| `npm run build`   | Typen pruefen und Produktion bauen       |
-| `npm run preview` | Produktions-Build lokal ansehen          |
-| `npm run lint`    | ESLint ueber das Projekt laufen lassen   |
+| `bun run dev`     | Vite-Dev-Server starten                  |
+| `bun run build`   | Typen pruefen und Produktion bauen       |
+| `bun run preview` | Produktions-Build lokal ansehen          |
+| `bun run lint`    | ESLint ueber das Projekt laufen lassen   |
 
 ## 8. Lizenz
 

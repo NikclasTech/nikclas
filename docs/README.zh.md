@@ -110,13 +110,13 @@ Nikclas 是一个单页 React 应用，只回答一个问题：哪个 AI 模型�
 ### 安装
 
 ```bash
-npm install
+bun install
 ```
 
 ### 开发服务器
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 在浏览器打开 http://localhost:5173/。
@@ -124,11 +124,11 @@ npm run dev
 ### 生产构建
 
 ```bash
-npm run build
-npm run preview
+bun run build
+bun run preview
 ```
 
-`npm run build` 会做类型检查（`tsc -b`）并把静态站点输出到 `dist/`，
+`bun run build` 会做类型检查（`tsc -b`）并把静态站点输出到 `dist/`，
 可部署到任何静态托管。
 
 ## 6. 价格数据
@@ -185,10 +185,10 @@ npm run preview
 
 | 命令 | 说明 |
 | ---- | ---- |
-| `npm run dev` | 启动 Vite 开发服务器 |
-| `npm run build` | 类型检查并构建生产版本 |
-| `npm run preview` | 本地预览生产构建 |
-| `npm run lint` | 对项目运行 ESLint |
+| `bun run dev` | 启动 Vite 开发服务器 |
+| `bun run build` | 类型检查并构建生产版本 |
+| `bun run preview` | 本地预览生产构建 |
+| `bun run lint` | 对项目运行 ESLint |
 
 ## 8. 许可证
 

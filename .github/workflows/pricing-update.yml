@@ -18,17 +18,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
+          bun-version: latest
+      - run: bun install --frozen-lockfile
 
       - name: Collect pricing
-        run: npm run collect:pricing
+        run: bun run collect:pricing
 
       - name: Validate pricing
-        run: npm run validate:pricing
+        run: bun run validate:pricing
 
       - name: Detect changes
         id: diff

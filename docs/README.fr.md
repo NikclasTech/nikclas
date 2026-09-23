@@ -115,18 +115,18 @@ l'API publique de prix directement depuis le navigateur.
 
 ### Prerequis
 
-- Node.js 20+ et npm.
+- Bun 1.2+.
 
 ### Installation
 
 ```bash
-npm install
+bun install
 ```
 
 ### Serveur de developpement
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 Ouvrez http://localhost:5173/ dans votre navigateur.
@@ -134,11 +134,11 @@ Ouvrez http://localhost:5173/ dans votre navigateur.
 ### Build de production
 
 ```bash
-npm run build
-npm run preview
+bun run build
+bun run preview
 ```
 
-`npm run build` verifie les types (`tsc -b`) et genere le site statique
+`bun run build` verifie les types (`tsc -b`) et genere le site statique
 dans `dist/`, deployable sur n'importe quel hebergeur statique.
 
 ## 6. Donnees tarifaires
@@ -202,10 +202,10 @@ l'ajout d'un fournisseur.
 
 | Commande        | Description                              |
 | --------------- | ---------------------------------------- |
-| `npm run dev`     | Demarre le serveur de developpement Vite |
-| `npm run build`   | Verifie les types et build la production |
-| `npm run preview` | Previsualise le build localement         |
-| `npm run lint`    | Execute ESLint sur le projet             |
+| `bun run dev`     | Demarre le serveur de developpement Vite |
+| `bun run build`   | Verifie les types et build la production |
+| `bun run preview` | Previsualise le build localement         |
+| `bun run lint`    | Execute ESLint sur le projet             |
 
 ## 8. Licence
 

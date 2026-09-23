@@ -114,18 +114,18 @@ la API publica de precios desde el navegador.
 
 ### Requisitos
 
-- Node.js 20+ y npm.
+- Bun 1.2+.
 
 ### Instalacion
 
 ```bash
-npm install
+bun install
 ```
 
 ### Servidor de desarrollo
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 Abre http://localhost:5173/ en tu navegador.
@@ -133,11 +133,11 @@ Abre http://localhost:5173/ en tu navegador.
 ### Build de produccion
 
 ```bash
-npm run build
-npm run preview
+bun run build
+bun run preview
 ```
 
-`npm run build` verifica tipos (`tsc -b`) y genera el sitio estatico en
+`bun run build` verifica tipos (`tsc -b`) y genera el sitio estatico en
 `dist/`, servible desde cualquier hosting estatico.
 
 ## 6. Datos de precios
@@ -199,10 +199,10 @@ para contribuir, incluido como anadir un proveedor.
 
 | Comando         | Descripcion                              |
 | --------------- | ---------------------------------------- |
-| `npm run dev`     | Inicia el servidor de desarrollo de Vite |
-| `npm run build`   | Verifica tipos y genera produccion       |
-| `npm run preview` | Previsualiza la build localmente         |
-| `npm run lint`    | Ejecuta ESLint en el proyecto            |
+| `bun run dev`     | Inicia el servidor de desarrollo de Vite |
+| `bun run build`   | Verifica tipos y genera produccion       |
+| `bun run preview` | Previsualiza la build localmente         |
+| `bun run lint`    | Ejecuta ESLint en el proyecto            |
 
 ## 8. Licencia
 

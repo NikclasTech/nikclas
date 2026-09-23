@@ -1,7 +1,5 @@
-# Netlify build settings for the Nikclas static site.
+# Netlify build settings for the Nikclas static site (Bun toolchain,
+# detected via bun.lock).
 [build]
-  command = "npm run build"
+  command = "bun run build"
   publish = "dist"
-
-[build.environment]
-  NODE_VERSION = "24"
