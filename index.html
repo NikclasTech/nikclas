@@ -19,6 +19,53 @@
 
 <body>
   <div id="root"></div>
+  <noscript>
+    <p style="padding:2rem;font-family:monospace;color:#eaf0fb;background:#060b1a">
+      Nikclas needs JavaScript enabled to run.
+    </p>
+  </noscript>
+  <script>
+    // Boot watchdog: if the app never mounts (blocked/failed script),
+    // surface the reason on the page instead of a blank background.
+    (function () {
+      function show(title, detail) {
+        if (document.getElementById("boot-error")) return;
+        var box = document.createElement("div");
+        box.id = "boot-error";
+        box.setAttribute("role", "alert");
+        box.style.cssText =
+          "position:fixed;left:1rem;right:1rem;bottom:1rem;z-index:9999;" +
+          "background:#0c1429;color:#eaf0fb;border:1px solid #ffb224;" +
+          "border-radius:8px;padding:1rem;font-family:monospace;font-size:13px;";
+        box.innerHTML =
+          "<strong>" + title + "</strong><br><span></span>";
+        box.querySelector("span").textContent = detail;
+        document.body.appendChild(box);
+      }
+      window.addEventListener(
+        "error",
+        function (e) {
+          if (document.getElementById("root").dataset.mounted) return;
+          show("Nikclas failed to start:", (e && e.message) || "unknown script error");
+        },
+        true,
+      );
+      window.addEventListener("unhandledrejection", function (e) {
+        if (document.getElementById("root").dataset.mounted) return;
+        var reason = (e && e.reason && (e.reason.message || e.reason)) || "unknown error";
+        show("Nikclas failed to start:", String(reason));
+      });
+      setTimeout(function () {
+        var root = document.getElementById("root");
+        if (!root.dataset.mounted && !root.firstChild && !document.getElementById("boot-error")) {
+          show(
+            "Nikclas did not start:",
+            "scripts did not run (blocked JavaScript, file:// protocol or failed download). Serve with `bun run dev` and open http://localhost:5173/.",
+          );
+        }
+      }, 8000);
+    })();
+  </script>
   <script type="module" src="/src/main.tsx"></script>
 </body>
 
