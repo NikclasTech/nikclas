@@ -10,6 +10,10 @@ describe("parseCatalogEntry", () => {
         output_cost_per_token: 6e-7,
         max_input_tokens: 128000,
         provider: "openai",
+        supports_function_calling: true,
+        supports_vision: true,
+        supports_response_schema: true,
+        supports_prompt_caching: true,
       }),
     ).toEqual({
       model: "gpt-4o-mini",
@@ -18,6 +22,12 @@ describe("parseCatalogEntry", () => {
       contextTokens: 128000,
       provider: "openai",
       source: "https://api.litellm.ai/model_catalog/gpt-4o-mini",
+      capabilities: {
+        function_calling: true,
+        vision: true,
+        structured_output: true,
+        prompt_caching: true,
+      },
     });
   });
 
@@ -27,6 +37,16 @@ describe("parseCatalogEntry", () => {
       output_cost_per_token: 2.2e-6,
       max_input_tokens: 100,
       provider: "p",
+      supports_function_calling: true,
+      supports_vision: false,
+      supports_response_schema: null,
+      supports_prompt_caching: null,
+    });
+    expect(got.capabilities).toEqual({
+      function_calling: true,
+      vision: false,
+      structured_output: false,
+      prompt_caching: false,
     });
     expect(got.inputPer1M).toBe(1.1);
     expect(got.outputPer1M).toBe(2.2);
@@ -38,6 +58,10 @@ describe("parseCatalogEntry", () => {
       output_cost_per_token: 4.4e-6,
       max_input_tokens: 1000000,
       provider: "zai",
+      supports_function_calling: true,
+      supports_vision: null,
+      supports_response_schema: null,
+      supports_prompt_caching: true,
     });
     expect(got.source).toBe("https://api.litellm.ai/model_catalog/zai%2Fglm-5.3");
   });
@@ -49,6 +73,10 @@ describe("parseCatalogEntry", () => {
         output_cost_per_token: 4e-6,
         max_input_tokens: 100,
         provider: "p",
+        supports_function_calling: null,
+        supports_vision: null,
+        supports_response_schema: null,
+        supports_prompt_caching: null,
       }),
     ).toThrow(/no pricing data for m/);
   });
@@ -72,6 +100,10 @@ describe("LitellmProvider.fetchPricing", () => {
             output_cost_per_token: 2e-6,
             max_input_tokens: 1000,
             provider: "test",
+            supports_function_calling: true,
+            supports_vision: false,
+            supports_response_schema: true,
+            supports_prompt_caching: false,
           }),
         };
       }),

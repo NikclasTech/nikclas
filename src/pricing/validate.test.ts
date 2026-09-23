@@ -53,6 +53,26 @@ describe("validateDataset", () => {
     expect(codes).toContain("model-unknown-provider");
   });
 
+  it("rejects models with missing or non-boolean capabilities", () => {
+    const { capabilities: _drop, ...withoutCaps } = models[0];
+    void _drop;
+    const missing = validateDataset(
+      providers,
+      [withoutCaps] as unknown as ModelEntry[],
+      pricing,
+    ).map((i) => i.code);
+    expect(missing).toContain("model-bad-capabilities");
+    const notBool = [
+      { ...models[0], capabilities: { ...models[0].capabilities, vision: "yes" } },
+    ];
+    const badType = validateDataset(
+      providers,
+      notBool as unknown as ModelEntry[],
+      pricing,
+    ).map((i) => i.code);
+    expect(badType).toContain("model-bad-capabilities");
+  });
+
   it("rejects duplicate models and duplicate pricing rows", () => {
     const dupModels = [...models, models[0]];
     expect(validateDataset(providers, dupModels, pricing).map((i) => i.code)).toContain(

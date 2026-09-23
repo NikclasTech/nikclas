@@ -18,11 +18,19 @@ export type ProviderEntry = {
   pricing_url: string | null;
 };
 
+export type Capabilities = {
+  function_calling: boolean;
+  vision: boolean;
+  structured_output: boolean;
+  prompt_caching: boolean;
+};
+
 export type ModelEntry = {
   id: string;
   name: string;
   provider: string;
   context_tokens: number;
+  capabilities: Capabilities;
 };
 
 export type ChangeKind = "changed" | "added" | "removed";

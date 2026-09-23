@@ -1,3 +1,5 @@
+import type { Capabilities } from "../types";
+
 /** A pricing source. One implementation per origin (LiteLLM catalog,
  *  official provider pages, ...). New providers only need to implement
  *  this interface and register in ./index. */
@@ -13,6 +15,8 @@ export type ModelPricing = {
   provider: string;
   /** URL the row was fetched from. */
   source: string;
+  /** Developer-facing capabilities. */
+  capabilities: Capabilities;
 };
 
 export interface PricingProvider {

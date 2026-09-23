@@ -9,6 +9,12 @@ const entry: ModelPricing = {
   contextTokens: 128000,
   provider: "openai",
   source: "https://api.litellm.ai/model_catalog/gpt-4o-mini",
+  capabilities: {
+    function_calling: true,
+    vision: true,
+    structured_output: true,
+    prompt_caching: true,
+  },
 };
 
 describe("normalizePricing", () => {

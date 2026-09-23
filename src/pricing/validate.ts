@@ -65,6 +65,16 @@ export function validateDataset(
     if (!providerIds.has(m.provider)) {
       issues.push(err("model-unknown-provider", `model ${m.id} references unknown provider: ${m.provider}`));
     }
+    const caps = m.capabilities as unknown as Record<string, unknown> | null;
+    if (
+      caps == null ||
+      typeof caps !== "object" ||
+      ["function_calling", "vision", "structured_output", "prompt_caching"].some(
+        (k) => typeof caps[k] !== "boolean",
+      )
+    ) {
+      issues.push(err("model-bad-capabilities", `model ${m.id} has invalid capabilities`));
+    }
   }
 
   const seen = new Set<string>();

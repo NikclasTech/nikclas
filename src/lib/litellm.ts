@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import modelsData from "../../data/models.json";
 import pricingData from "../../data/pricing.json";
+import type { Capabilities } from "../pricing/types";
 
 /* Data layer: live pricing from the LiteLLM Model Catalog API.
    GET https://api.litellm.ai/model_catalog/{model_id} returns per-token
@@ -28,6 +29,7 @@ export type LivePrice = {
   output: number;
   maxInputTokens: number;
   provider: string;
+  capabilities: Capabilities;
 };
 
 /** Catalog — every id verified to exist in the API on 2026-09-22. */
@@ -54,6 +56,7 @@ type DataModelRow = {
   name: string;
   provider: string;
   context_tokens: number;
+  capabilities: Capabilities;
 };
 
 type DataPricingRow = {
@@ -79,6 +82,7 @@ function buildFallback(): Record<string, LivePrice> {
       output: byKey.get(`${m.id}|output`) ?? 0,
       maxInputTokens: m.context_tokens,
       provider: m.provider,
+      capabilities: m.capabilities,
     };
   }
   return out;
@@ -91,6 +95,10 @@ type CatalogEntry = {
   output_cost_per_token: number | null;
   max_input_tokens: number | null;
   provider: string | null;
+  supports_function_calling: boolean | null;
+  supports_vision: boolean | null;
+  supports_response_schema: boolean | null;
+  supports_prompt_caching: boolean | null;
 };
 
 let inflight: Promise<Record<string, LivePrice>> | null = null;
@@ -107,6 +115,12 @@ async function fetchEntry(id: string): Promise<LivePrice> {
     output: j.output_cost_per_token * 1_000_000,
     maxInputTokens: j.max_input_tokens ?? FALLBACK_PRICES[id]?.maxInputTokens ?? 0,
     provider: j.provider ?? FALLBACK_PRICES[id]?.provider ?? "",
+    capabilities: {
+      function_calling: j.supports_function_calling === true,
+      vision: j.supports_vision === true,
+      structured_output: j.supports_response_schema === true,
+      prompt_caching: j.supports_prompt_caching === true,
+    },
   };
 }
 

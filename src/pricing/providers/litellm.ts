@@ -1,4 +1,5 @@
 import { LITELLM_API, MODELS } from "../../lib/litellm";
+import type { Capabilities } from "../types";
 import type { ModelPricing, PricingProvider } from "./types";
 
 export type CatalogEntry = {
@@ -6,7 +7,20 @@ export type CatalogEntry = {
   output_cost_per_token: number | null;
   max_input_tokens: number | null;
   provider: string | null;
+  supports_function_calling: boolean | null;
+  supports_vision: boolean | null;
+  supports_response_schema: boolean | null;
+  supports_prompt_caching: boolean | null;
 };
+
+export function parseCapabilities(entry: CatalogEntry): Capabilities {
+  return {
+    function_calling: entry.supports_function_calling === true,
+    vision: entry.supports_vision === true,
+    structured_output: entry.supports_response_schema === true,
+    prompt_caching: entry.supports_prompt_caching === true,
+  };
+}
 
 /** Round to 6 decimals to avoid float dust from per-token scaling. */
 export function round6(n: number): number {
@@ -25,6 +39,7 @@ export function parseCatalogEntry(model: string, entry: CatalogEntry): ModelPric
     contextTokens: entry.max_input_tokens ?? 0,
     provider: entry.provider ?? "unknown",
     source: `${LITELLM_API}/model_catalog/${encodeURIComponent(model)}`,
+    capabilities: parseCapabilities(entry),
   };
 }
 
