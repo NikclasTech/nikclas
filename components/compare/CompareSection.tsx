@@ -14,16 +14,18 @@ export default function CompareSection() {
   const [b, setB] = useState<SideValue>({ provider: ALL_PROVIDERS, model: "gpt-4o" });
   const { status, prices, updatedAt } = useLivePrices();
 
+  // Providers come from the static catalog vendors (the makers being
+  // compared), not from whichever host bills each row upstream.
   const providers: ProviderOption[] = useMemo(() => {
     const counts = new Map<string, number>();
     for (const m of MODELS) {
-      const label = vendorLabel((prices[m.id] ?? FALLBACK_PRICES[m.id]).provider || m.vendor);
+      const label = vendorLabel(m.vendor);
       counts.set(label, (counts.get(label) ?? 0) + 1);
     }
     return [...counts.entries()]
       .map(([label, count]) => ({ id: label, label, count }))
       .sort((x, y) => x.label.localeCompare(y.label));
-  }, [prices]);
+  }, []);
 
   const withBars: MergedModel[] = useMemo(() => {
     const base = MODELS.map((m) => ({ ...m, ...(prices[m.id] ?? FALLBACK_PRICES[m.id]) }));

@@ -33,7 +33,7 @@ export default function ModelCard({ model, winner, tied }: { model: MergedModel;
     >
       <div className="flex items-center justify-between gap-3">
         <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#93a0b8]">
-          {vendorLabel(model.provider)}
+          {vendorLabel(model.vendor)}
         </p>
         <span
           className={`rounded border px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.16em] ${
