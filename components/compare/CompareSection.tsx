@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { FALLBACK_PRICES, MODELS, useLivePrices } from "../../src/lib/litellm";
 import { fmt, fmtAgo, linearBarWidth, vendorLabel } from "../../src/lib/format";
+import Calculator from "./Calculator";
 import ModelCard, { type MergedModel } from "./ModelCard";
 import CompareForm, { ALL_PROVIDERS, type ProviderOption, type SideValue } from "./CompareForm";
 
@@ -69,11 +70,12 @@ export default function CompareSection() {
           };
 
   return (
+    <>
     <section
       id="versus"
       aria-labelledby="versus-title"
       aria-busy={status === "loading"}
-      className="relative mx-auto w-full max-w-6xl px-6 pb-20"
+      className="relative mx-auto w-full max-w-6xl px-6 pb-4"
     >
       <div className="max-w-2xl">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#4de3ff]/80">
@@ -156,5 +158,7 @@ export default function CompareSection() {
         </span>
       </p>
     </section>
+    <Calculator />
+    </>
   );
 }
