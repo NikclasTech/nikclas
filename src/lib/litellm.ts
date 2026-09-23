@@ -12,7 +12,9 @@ import type { Capabilities } from "../pricing/types";
    renders while loading or if the request fails.
    Presentation helpers (fmt, vendor labels, bar scales) live in ./format. */
 export const LITELLM_API = "https://api.litellm.ai";
-const CACHE_KEY = "nikclas:litellm-prices:v1";
+// Bumped whenever the cached shape changes so stale entries can never
+// crash the UI (e.g. entries written before `capabilities` existed).
+const CACHE_KEY = "nikclas:litellm-prices:v2";
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
 export type StaticSpec = {
@@ -147,13 +149,32 @@ export function fetchAllLive(): Promise<Record<string, LivePrice>> {
 
 type Cached = { savedAt: number; prices: Record<string, LivePrice> };
 
+const CAPABILITY_KEYS = ["function_calling", "vision", "structured_output", "prompt_caching"];
+
+function isLivePrice(p: unknown): p is LivePrice {
+  if (typeof p !== "object" || p === null) return false;
+  const r = p as Record<string, unknown>;
+  const caps = r.capabilities as Record<string, unknown> | null;
+  return (
+    typeof r.input === "number" &&
+    typeof r.output === "number" &&
+    typeof r.maxInputTokens === "number" &&
+    typeof r.provider === "string" &&
+    caps != null &&
+    typeof caps === "object" &&
+    CAPABILITY_KEYS.every((k) => typeof caps[k] === "boolean")
+  );
+}
+
 export function readCache(): Cached | null {
   try {
     const raw = localStorage.getItem(CACHE_KEY);
     if (!raw) return null;
     const c = JSON.parse(raw) as Cached;
-    if (!c.savedAt || !c.prices) return null;
+    if (!c.savedAt || typeof c.prices !== "object" || c.prices == null) return null;
     if (Date.now() - c.savedAt > CACHE_TTL_MS) return null;
+    // Reject entries from older shapes instead of crashing on them.
+    if (!Object.values(c.prices).every(isLivePrice)) return null;
     return c;
   } catch {
     return null;
