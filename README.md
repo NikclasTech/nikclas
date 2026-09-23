@@ -56,7 +56,11 @@ All prices load live from the
   syncing / cached status indicator.
 - **Head-to-head comparator** — provider and model selectors on both
   sides, swap button, per-model datasheets (input, output, context,
-  speed), a central savings readout and a plain-language verdict.
+  speed, developer capabilities), official provider links, a central
+  savings readout and a plain-language verdict.
+- **Monthly cost calculator** — enter monthly input/output M tokens (or
+  pick a preset) and see the monthly and daily bill per model with the
+  full ranking, cheapest first.
 - **Live pricing with honest fallback** — prices are fetched from
   `https://api.litellm.ai/model_catalog/{model_id}`, cached in
   `localStorage` for 24h, and fall back to a bundled snapshot (verified

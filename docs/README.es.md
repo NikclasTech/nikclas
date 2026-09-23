@@ -49,8 +49,12 @@ Todos los precios se cargan en vivo desde la
   sincronizando / cache.
 - **Comparador cara a cara** — selectores de proveedor y modelo en ambos
   lados, boton de intercambio, fichas por modelo (entrada, salida,
-  contexto, velocidad), lectura central del ahorro y veredicto en
+  contexto, velocidad, capacidades para desarrolladores), enlaces
+  oficiales al proveedor, lectura central del ahorro y veredicto en
   lenguaje claro.
+- **Calculadora mensual** — introduce los M tokens mensuales de entrada
+  y salida (o un preset) y mira el coste mensual y diario por modelo con
+  el ranking completo, del mas barato al mas caro.
 - **Precios en vivo con respaldo honesto** — los precios se piden a
   `https://api.litellm.ai/model_catalog/{model_id}`, se cachean en
   `localStorage` durante 24h y, si no hay conexion, se usa una foto fija

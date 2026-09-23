@@ -50,8 +50,12 @@ Tous les prix sont charges en direct depuis l'
   direct / synchronisation / cache.
 - **Comparateur en face a face** — selecteurs de fournisseur et de
   modele des deux cotes, bouton d'echange, fiches par modele (entree,
-  sortie, contexte, vitesse), lecture centrale de l'economie et verdict
-  en langage clair.
+  sortie, contexte, vitesse, capacites developpeur), liens officiels
+  vers le fournisseur, lecture centrale de l'economie et verdict en
+  langage clair.
+- **Calculateur mensuel** — saisissez les M tokens mensuels d'entree et
+  de sortie (ou un preset) et voyez la facture mensuelle et quotidienne
+  par modele avec le classement complet, du moins cher au plus cher.
 - **Prix en direct avec repli honnete** — les prix sont demandes a
   `https://api.litellm.ai/model_catalog/{model_id}`, mis en cache dans
   `localStorage` pendant 24h, avec repli sur un instantane integre

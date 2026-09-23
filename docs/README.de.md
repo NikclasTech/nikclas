@@ -48,8 +48,11 @@ Alle Preise werden live von der
   Markierungen und Statusanzeige live / synchronisiert / Cache.
 - **Kopf-an-Kopf-Vergleich** — Anbieter- und Modellauswahl auf beiden
   Seiten, Tausch-Button, Datenblaetter pro Modell (Input, Output,
-  Kontext, Tempo), zentrale Ersparnisanzeige und Urteil in klarer
-  Sprache.
+  Kontext, Tempo, Entwickler-Faehigkeiten), offizielle Anbieter-Links,
+  zentrale Ersparnisanzeige und Urteil in klarer Sprache.
+- **Monatsrechner** — monatliche Input-/Output-M-Tokens eingeben (oder
+  ein Preset), Monats- und Tageskosten pro Modell mit komplettem
+  Ranking sehen, guenstigstes zuerst.
 - **Live-Preise mit ehrlichem Fallback** — Preise werden von
   `https://api.litellm.ai/model_catalog/{model_id}` abgefragt, 24h in
   `localStorage` gecacht, mit gebuendeltem Snapshot (verifiziert am
