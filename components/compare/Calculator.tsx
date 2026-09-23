@@ -2,17 +2,13 @@ import { useMemo, useState } from "react";
 import { FALLBACK_PRICES, MODELS, useLivePrices } from "../../src/lib/litellm";
 import { fmt, linearBarWidth } from "../../src/lib/format";
 import { estimateMonthlyCost, rankByMonthlyCost } from "../../src/pricing/estimate";
+import { Bar, Button, Field, NumberField, SectionHeader, Select } from "../ui";
 
 const PRESETS = [
   { label: "Side project", inputM: "5", outputM: "1" },
   { label: "Startup", inputM: "50", outputM: "10" },
   { label: "Scale", inputM: "500", outputM: "100" },
 ];
-
-const inputClass =
-  "w-full rounded-md border border-[#22304f] bg-[#0c1429] px-3 py-2.5 font-mono text-[13px] tabular-nums text-[#eaf0fb] transition-colors duration-200 hover:border-[#4de3ff]/50 focus:border-[#4de3ff]";
-
-const labelClass = "font-mono text-[11px] uppercase tracking-[0.2em] text-[#93a0b8]";
 
 export default function CostCalculator() {
   const { status, prices } = useLivePrices();
@@ -44,83 +40,42 @@ export default function CostCalculator() {
       className="relative mx-auto mt-4 w-full max-w-6xl px-6 pb-20"
     >
       <div className="rounded-xl border border-[#22304f] bg-[#0c1429]/60 p-5 backdrop-blur sm:p-6">
-        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#4de3ff]/80">
-          Monthly estimate — your usage, every model
-        </p>
-        <h2
-          id="calculator-title"
-          className="display-tight mt-3 font-display text-3xl font-bold uppercase text-[#eaf0fb] sm:text-4xl"
-        >
-          What will it cost per month?
-        </h2>
+        <SectionHeader
+          eyebrow="Monthly estimate — your usage, every model"
+          title="What will it cost per month?"
+          titleId="calculator-title"
+          description=""
+        />
 
         <form
           aria-label="Monthly usage"
           onSubmit={(e) => e.preventDefault()}
           className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3"
         >
-          <div className="flex flex-col gap-2">
-            <label htmlFor="calc-model" className={labelClass}>
-              Model
-            </label>
-            <select
+          <Field id="calc-model" label="Model" className="min-w-0 flex-1">
+            <Select
               id="calc-model"
               value={current.id}
-              onChange={(e) => setModelId(e.target.value)}
-              className={`${inputClass} cursor-pointer appearance-none pr-9`}
-            >
-              {rows.map((m) => (
-                <option key={m.id} value={m.id} className="bg-[#0c1429]">
-                  {m.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="calc-input" className={labelClass}>
-              Input M tokens / mo
-            </label>
-            <input
-              id="calc-input"
-              type="number"
-              min={0}
-              step="any"
-              inputMode="decimal"
-              value={inputM}
-              onChange={(e) => setInputM(e.target.value)}
-              className={inputClass}
+              onChange={setModelId}
+              options={rows.map((m) => ({ value: m.id, label: m.name }))}
             />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="calc-output" className={labelClass}>
-              Output M tokens / mo
-            </label>
-            <input
-              id="calc-output"
-              type="number"
-              min={0}
-              step="any"
-              inputMode="decimal"
-              value={outputM}
-              onChange={(e) => setOutputM(e.target.value)}
-              className={inputClass}
-            />
-          </div>
+          </Field>
+          <NumberField id="calc-input" label="Input M tokens / mo" value={inputM} onChange={setInputM} />
+          <NumberField id="calc-output" label="Output M tokens / mo" value={outputM} onChange={setOutputM} />
         </form>
 
         <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Usage presets">
           {PRESETS.map((p) => (
-            <button
+            <Button
               key={p.label}
-              type="button"
+              variant="pill"
               onClick={() => {
                 setInputM(p.inputM);
                 setOutputM(p.outputM);
               }}
-              className="rounded-full border border-[#22304f] px-3 py-1.5 font-mono text-xs text-[#93a0b8] transition-colors duration-200 hover:border-[#4de3ff]/60 hover:text-[#4de3ff]"
             >
               {p.label}: {p.inputM}M in / {p.outputM}M out
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -149,12 +104,7 @@ export default function CostCalculator() {
               <span className="w-6 font-mono text-xs text-[#93a0b8]">{String(i + 1).padStart(2, "0")}</span>
               <span className="min-w-0">
                 <span className="block truncate font-mono text-[13px] text-[#eaf0fb]">{r.name}</span>
-                <span className="mt-1 block h-1 overflow-hidden rounded-full bg-white/[0.07]">
-                  <span
-                    className={`block h-full rounded-full ${i === 0 ? "bg-[#ffb224]" : "bg-[#4de3ff]/70"}`}
-                    style={{ width: linearBarWidth(r.monthly, max) }}
-                  />
-                </span>
+                <Bar width={linearBarWidth(r.monthly, max)} tone={i === 0 ? "amber" : "signal"} size="sm" className="mt-1" />
               </span>
               <span className="font-mono text-[13px] font-medium tabular-nums text-[#eaf0fb]">
                 {fmt(r.monthly)}

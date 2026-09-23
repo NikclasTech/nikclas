@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { FALLBACK_PRICES, MODELS, useLivePrices } from "../../src/lib/litellm";
 import { fmt, fmtAgo, linearBarWidth, vendorLabel } from "../../src/lib/format";
+import { ExternalLink, SectionHeader, StatusDot } from "../ui";
+import type { StatusTone } from "../ui";
 import Calculator from "./Calculator";
 import ModelCard, { type MergedModel } from "./ModelCard";
 import CompareForm, { ALL_PROVIDERS, type ProviderOption, type SideValue } from "./CompareForm";
@@ -9,6 +11,12 @@ function modelsForProvider(provider: string) {
   if (provider === ALL_PROVIDERS) return MODELS;
   return MODELS.filter((m) => vendorLabel(m.vendor) === provider);
 }
+
+const STATUS_TONE: Record<"live" | "loading" | "stale", StatusTone> = {
+  live: "live",
+  loading: "syncing",
+  stale: "cached",
+};
 
 export default function CompareSection() {
   const [a, setA] = useState<SideValue>({ provider: ALL_PROVIDERS, model: "gpt-4o-mini" });
@@ -59,15 +67,14 @@ export default function CompareSection() {
     setB(a);
   }
 
-  const statusMeta =
+  const statusText =
     status === "live"
-      ? { dot: "bg-green-400", text: `live prices · updated ${updatedAt ? fmtAgo(updatedAt) : "just now"}` }
+      ? `live prices · updated ${updatedAt ? fmtAgo(updatedAt) : "just now"}`
       : status === "loading"
-        ? { dot: "bg-[#ffb224] animate-pulse", text: "fetching live prices…" }
-        : {
-            dot: "bg-[#ffb224]",
-            text: updatedAt ? `cached prices · updated ${fmtAgo(updatedAt)}` : "bundled snapshot · retrying live",
-          };
+        ? "fetching live prices…"
+        : updatedAt
+          ? `cached prices · updated ${fmtAgo(updatedAt)}`
+          : "bundled snapshot · retrying live";
 
   return (
     <>
@@ -77,33 +84,17 @@ export default function CompareSection() {
       aria-busy={status === "loading"}
       className="relative mx-auto w-full max-w-6xl px-6 pb-4"
     >
-      <div className="max-w-2xl">
-        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#4de3ff]/80">
-          Head-to-head — same 2k draft task
-        </p>
-        <h2
-          id="versus-title"
-          className="display-tight mt-3 font-display text-3xl font-bold uppercase text-[#eaf0fb] sm:text-4xl"
-        >
-          Pick two. See the gap.
-        </h2>
-        <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-[#93a0b8]">
-          Choose a provider and model on each side. Prices load live from the
-          LiteLLM catalog — the cheaper input price wins.
-        </p>
-        <p aria-live="polite" className="mt-3 flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em]">
-          <span className={`h-1.5 w-1.5 rounded-full ${statusMeta.dot}`} aria-hidden />
-          <span className="text-[#93a0b8]">{statusMeta.text}</span>
-          <a
-            href="https://api.litellm.ai/"
-            target="_blank"
-            rel="noreferrer"
-            className="text-[#4de3ff]/80 underline decoration-[#4de3ff]/30 underline-offset-4 hover:text-[#4de3ff]"
-          >
-            api.litellm.ai
-          </a>
-        </p>
-      </div>
+      <SectionHeader
+        eyebrow="Head-to-head — same 2k draft task"
+        title="Pick two. See the gap."
+        titleId="versus-title"
+        description="Choose a provider and model on each side. Prices load live from the LiteLLM catalog — the cheaper input price wins."
+      />
+      <p aria-live="polite" className="mt-3 flex max-w-2xl flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em]">
+        <StatusDot tone={STATUS_TONE[status]} />
+        <span className="text-[#93a0b8]">{statusText}</span>
+        <ExternalLink href="https://api.litellm.ai/">api.litellm.ai</ExternalLink>
+      </p>
 
       <CompareForm
         providers={providers}

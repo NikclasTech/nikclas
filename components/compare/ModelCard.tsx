@@ -1,6 +1,7 @@
 import { fmt, fmtCtx, vendorLabel, websiteForVendor } from "../../src/lib/format";
 import type { LivePrice, StaticSpec } from "../../src/lib/litellm";
 import type { Capabilities } from "../../src/pricing/types";
+import { Badge, Bar, ExternalLink } from "../ui";
 
 export type MergedModel = StaticSpec & LivePrice & { barWidth: string };
 
@@ -45,15 +46,7 @@ export default function ModelCard({ model, winner, tied }: { model: MergedModel;
         <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#93a0b8]">
           {vendorLabel(model.vendor)}
         </p>
-        <span
-          className={`rounded border px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.16em] ${
-            winner && !tied
-              ? "border-[#ffb224]/40 bg-[#ffb224]/10 text-[#ffb224]"
-              : "border-[#22304f] text-[#93a0b8]"
-          }`}
-        >
-          {tag}
-        </span>
+        <Badge tone={winner && !tied ? "amber" : "muted"}>{tag}</Badge>
       </div>
 
       <h3 className="mt-3 break-all font-display text-xl font-semibold tracking-tight text-[#eaf0fb]">
@@ -71,12 +64,7 @@ export default function ModelCard({ model, winner, tied }: { model: MergedModel;
         <span className="font-mono text-xs text-[#93a0b8]">/1M in</span>
       </p>
 
-      <div aria-hidden className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/[0.07]">
-        <div
-          className={`h-full rounded-full transition-[width] duration-500 ${winner && !tied ? "bg-[#ffb224]" : "bg-[#4de3ff]/70"}`}
-          style={{ width: model.barWidth }}
-        />
-      </div>
+      <Bar width={model.barWidth} tone={winner && !tied ? "amber" : "signal"} className="mt-3" />
 
       <dl className="mt-4">
         <SpecRow label="Input /1M" value={fmt(model.input)} accent={winner && !tied} />
@@ -112,15 +100,13 @@ export default function ModelCard({ model, winner, tied }: { model: MergedModel;
           })}
         </ul>
         {site && hostname && (
-          <a
+          <ExternalLink
             href={site}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-3 inline-flex items-center gap-1.5 font-mono text-xs text-[#4de3ff]/80 underline decoration-[#4de3ff]/30 underline-offset-4 transition-colors duration-200 hover:text-[#4de3ff]"
+            className="mt-3 inline-flex items-center gap-1.5 font-mono text-xs"
           >
             {hostname}
             <span aria-hidden>↗</span>
-          </a>
+          </ExternalLink>
         )}
       </div>
     </article>

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { FALLBACK_PRICES, MODELS, useLivePrices } from "../../src/lib/litellm";
 import { fmt, logBarWidth } from "../../src/lib/format";
+import { Button, Stat } from "../ui";
 import PriceBoard from "./PriceBoard";
 
 /** The board shows only the 4 highest-traffic flagships; the full
@@ -66,39 +67,29 @@ export default function HeroSection() {
             className="animate-rise mt-8 flex flex-wrap items-center gap-3"
             style={{ animationDelay: "260ms" }}
           >
-            <a
-              href="#compare"
-              className="group inline-flex items-center gap-2 rounded-md bg-[#ffb224] px-5 py-3 font-display text-sm font-semibold uppercase tracking-wide text-[#060b1a] transition-transform duration-200 hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0"
-            >
+            <Button variant="primary" size="lg" href="#compare">
               Compare models
               <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
                 →
               </span>
-            </a>
-            <a
+            </Button>
+            <Button
+              variant="ghost"
+              size="lg"
               href="https://github.com/NikclasTech/nikclas"
-              className="inline-flex items-center gap-2 rounded-md border border-[#22304f] bg-[#0c1429]/60 px-5 py-3 font-mono text-sm text-[#eaf0fb] transition-colors duration-200 hover:border-[#4de3ff]/60 hover:text-[#4de3ff]"
+              className="bg-[#0c1429]/60"
             >
               $ go to gh
-            </a>
+            </Button>
           </div>
 
           <dl
             className="animate-rise mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-[#22304f]/80 pt-6 font-mono text-xs"
             style={{ animationDelay: "340ms" }}
           >
-            <div>
-              <dt className="uppercase tracking-[0.18em] text-[#93a0b8]">Median saving</dt>
-              <dd className="mt-1 text-lg font-bold text-[#eaf0fb]">−73%</dd>
-            </div>
-            <div className="border-l border-[#22304f] pl-8">
-              <dt className="uppercase tracking-[0.18em] text-[#93a0b8]">Floor /1M</dt>
-              <dd className="mt-1 text-lg font-bold text-[#4de3ff]">{floor}</dd>
-            </div>
-            <div className="border-l border-[#22304f] pl-8">
-              <dt className="uppercase tracking-[0.18em] text-[#93a0b8]">Coverage</dt>
-              <dd className="mt-1 text-lg font-bold text-[#eaf0fb]">{MODELS.length} live</dd>
-            </div>
+            <Stat label="Median saving" value="−73%" />
+            <Stat label="Floor /1M" value={floor} accent className="border-l border-[#22304f] pl-8" />
+            <Stat label="Coverage" value={`${MODELS.length} live`} className="border-l border-[#22304f] pl-8" />
           </dl>
         </div>
 

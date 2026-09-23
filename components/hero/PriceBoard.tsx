@@ -1,4 +1,6 @@
 import type { PriceState } from "../../src/lib/litellm";
+import { Badge, Bar, StatusDot } from "../ui";
+import type { StatusTone } from "../ui";
 
 export type BoardRow = {
   id: string;
@@ -9,6 +11,18 @@ export type BoardRow = {
   tag: string | null;
 };
 
+const STATUS_TONE: Record<PriceState["status"], StatusTone> = {
+  live: "live",
+  loading: "syncing",
+  stale: "cached",
+};
+
+const STATUS_LABEL: Record<PriceState["status"], string> = {
+  live: "live",
+  loading: "syncing",
+  stale: "cached",
+};
+
 export default function PriceBoard({
   rows,
   status,
@@ -16,7 +30,6 @@ export default function PriceBoard({
   rows: BoardRow[];
   status: PriceState["status"];
 }) {
-  const liveDot = status === "live" ? "text-[#4de3ff]" : "animate-pulse text-[#ffb224]";
   return (
     <div id="compare" className="animate-rise relative items-center" style={{ animationDelay: "220ms" }}>
       <div aria-hidden className="absolute -left-2 -top-2 h-4 w-4 border-l-2 border-t-2 border-[#4de3ff]/70" />
@@ -38,8 +51,13 @@ export default function PriceBoard({
               nikclas <span className="text-[#eaf0fb]">--compare</span> --sort $/1M
             </p>
           </div>
-          <p className={`font-mono text-[11px] uppercase tracking-[0.18em] ${liveDot}`}>
-            ● {status === "live" ? "live" : status === "loading" ? "syncing" : "cached"}
+          <p
+            className={`flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.18em] ${
+              status === "live" ? "text-[#4de3ff]" : "animate-pulse text-[#ffb224]"
+            }`}
+          >
+            <StatusDot tone={STATUS_TONE[status]} />
+            {STATUS_LABEL[status]}
           </p>
         </div>
 
@@ -51,30 +69,19 @@ export default function PriceBoard({
                   {m.hot ? "▸" : "·"}
                 </span>
                 <span className="break-all">{m.name}</span>
-                {m.tag && (
-                  <span
-                    className={
-                      m.tag === "BEST"
-                        ? "shrink-0 rounded border border-[#ffb224]/40 bg-[#ffb224]/10 px-1.5 py-0.5 text-[10px] font-bold tracking-widest text-[#ffb224]"
-                        : "shrink-0 rounded border border-[#22304f] px-1.5 py-0.5 text-[10px] tracking-widest text-[#93a0b8]"
-                    }
-                  >
-                    {m.tag}
-                  </span>
-                )}
+                {m.tag && <Badge tone={m.tag === "BEST" ? "amber" : "muted"}>{m.tag}</Badge>}
               </p>
               <p className="font-mono text-[13px] font-medium tabular-nums text-[#eaf0fb]">
                 {m.price}
                 <span className="text-[#93a0b8]">/1M</span>
               </p>
-              <div className="col-span-2 h-1.5 overflow-hidden rounded-full bg-white/[0.07]">
-                <div
-                  className={`h-full origin-left animate-bar rounded-full transition-[width] duration-500 ${
-                    m.hot ? "bg-[#ffb224]" : "bg-[#4de3ff]/80"
-                  }`}
-                  style={{ width: m.width, animationDelay: `${400 + i * 120}ms` }}
-                />
-              </div>
+              <Bar
+                width={m.width}
+                tone={m.hot ? "amber" : "signal"}
+                animate
+                delayMs={400 + i * 120}
+                className="col-span-2"
+              />
             </li>
           ))}
         </ul>

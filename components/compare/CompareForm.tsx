@@ -1,5 +1,6 @@
 import { fmt, vendorLabel } from "../../src/lib/format";
 import type { StaticSpec } from "../../src/lib/litellm";
+import { Button, Field, Select } from "../ui";
 
 export const ALL_PROVIDERS = "all";
 
@@ -14,12 +15,6 @@ export type ProviderOption = {
   label: string;
   count: number;
 };
-
-const selectClass =
-  "w-full cursor-pointer appearance-none rounded-md border border-[#22304f] bg-[#0c1429] px-3 py-2.5 pr-9 font-mono text-[13px] text-[#eaf0fb] transition-colors duration-200 hover:border-[#4de3ff]/50 focus:border-[#4de3ff]";
-
-const labelClass =
-  "font-mono text-[11px] uppercase tracking-[0.2em] text-[#93a0b8]";
 
 function SidePicker({
   side,
@@ -39,43 +34,28 @@ function SidePicker({
   return (
     <fieldset className="flex min-w-0 flex-1 flex-col gap-3">
       <legend className="sr-only">Side {side}</legend>
-      <div className="flex flex-col gap-2">
-        <label htmlFor={`provider-${side}`} className={labelClass}>
-          Provider {side}
-        </label>
-        <select
+      <Field id={`provider-${side}`} label={`Provider ${side}`}>
+        <Select
           id={`provider-${side}`}
           value={value.provider}
-          onChange={(e) => onChange({ provider: e.target.value, model: value.model })}
-          className={selectClass}
-        >
-          <option value={ALL_PROVIDERS} className="bg-[#0c1429]">
-            All providers
-          </option>
-          {providers.map((p) => (
-            <option key={p.id} value={p.id} className="bg-[#0c1429]">
-              {p.label} ({p.count})
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor={`model-${side}`} className={labelClass}>
-          Model {side}
-        </label>
-        <select
+          onChange={(provider) => onChange({ provider, model: value.model })}
+          options={[
+            { value: ALL_PROVIDERS, label: "All providers" },
+            ...providers.map((p) => ({ value: p.id, label: `${p.label} (${p.count})` })),
+          ]}
+        />
+      </Field>
+      <Field id={`model-${side}`} label={`Model ${side}`}>
+        <Select
           id={`model-${side}`}
           value={value.model}
-          onChange={(e) => onChange({ provider: value.provider, model: e.target.value })}
-          className={selectClass}
-        >
-          {models.map((m) => (
-            <option key={m.id} value={m.id} className="bg-[#0c1429]">
-              {m.name} — {fmt(priceOf(m.id))}/1M · {vendorLabel(m.vendor)}
-            </option>
-          ))}
-        </select>
-      </div>
+          onChange={(model) => onChange({ provider: value.provider, model })}
+          options={models.map((m) => ({
+            value: m.id,
+            label: `${m.name} — ${fmt(priceOf(m.id))}/1M · ${vendorLabel(m.vendor)}`,
+          }))}
+        />
+      </Field>
     </fieldset>
   );
 }
@@ -113,15 +93,9 @@ export default function CompareForm({
         models={modelsFor(a.provider)}
         priceOf={priceOf}
       />
-      <button
-        type="button"
-        onClick={onSwap}
-        aria-label="Swap sides"
-        title="Swap sides"
-        className="inline-flex items-center justify-center gap-2 self-center rounded-md border border-[#22304f] px-4 py-2.5 font-mono text-sm text-[#eaf0fb] transition-colors duration-200 hover:border-[#4de3ff]/60 hover:text-[#4de3ff]"
-      >
+      <Button onClick={onSwap} aria-label="Swap sides" title="Swap sides" className="self-center">
         <span aria-hidden>⇄</span> Swap
-      </button>
+      </Button>
       <SidePicker
         side="B"
         providers={providers}
