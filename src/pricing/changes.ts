@@ -77,6 +77,45 @@ export function diffPricing(
   return changes;
 }
 
+export type MergeWarning = {
+  model: string;
+  message: string;
+};
+
+/** Merge fresh rows over the previous snapshot. Unchanged rows keep
+ *  their original updated_at so git history only records real changes;
+ *  models missing from the fetch keep their last-known rows plus a
+ *  warning instead of failing the whole run. Pure: unit-tested. */
+export function mergeFreshPrices(
+  previous: PricingRow[],
+  fresh: PricingRow[],
+): { merged: PricingRow[]; warnings: MergeWarning[] } {
+  const freshByKey = new Map(fresh.map((r) => [`${r.model}|${r.type}`, r]));
+  const merged: PricingRow[] = [];
+  const seen = new Set<string>();
+  for (const old of previous) {
+    const key = `${old.model}|${old.type}`;
+    seen.add(key);
+    const row = freshByKey.get(key);
+    merged.push(row && row.price_per_1m !== old.price_per_1m ? row : old);
+  }
+  for (const row of fresh) {
+    const key = `${row.model}|${row.type}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      merged.push(row);
+    }
+  }
+  const freshModels = new Set(fresh.map((r) => r.model));
+  const warnings = [...new Set(previous.map((r) => r.model))]
+    .filter((model) => !freshModels.has(model))
+    .map((model) => ({
+      model,
+      message: `no live data for ${model}; kept last-known prices`,
+    }));
+  return { merged, warnings };
+}
+
 function money(n: number | null): string {
   return n == null ? "n/a" : `$${n.toFixed(2)}`;
 }

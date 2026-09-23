@@ -43,6 +43,16 @@ export function parseCatalogEntry(model: string, entry: CatalogEntry): ModelPric
   };
 }
 
+/** Fetch one model entry. Exported so the collector can keep going
+ *  (with a warning) when a single model fails. */
+export async function fetchModelPricing(id: string): Promise<ModelPricing> {
+  const res = await fetch(`${LITELLM_API}/model_catalog/${encodeURIComponent(id)}`);
+  if (!res.ok) {
+    throw new Error(`litellm ${res.status} for ${id}`);
+  }
+  return parseCatalogEntry(id, (await res.json()) as CatalogEntry);
+}
+
 /** Collector for the LiteLLM Model Catalog API (free tier, no key).
  *  Requests run sequentially to stay polite with the 100 req/day quota. */
 export class LitellmProvider implements PricingProvider {
@@ -51,11 +61,7 @@ export class LitellmProvider implements PricingProvider {
   async fetchPricing(): Promise<ModelPricing[]> {
     const out: ModelPricing[] = [];
     for (const m of MODELS) {
-      const res = await fetch(`${LITELLM_API}/model_catalog/${encodeURIComponent(m.id)}`);
-      if (!res.ok) {
-        throw new Error(`litellm ${res.status} for ${m.id}`);
-      }
-      out.push(parseCatalogEntry(m.id, (await res.json()) as CatalogEntry));
+      out.push(await fetchModelPricing(m.id));
     }
     return out;
   }

@@ -5,10 +5,17 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { diffPricing, formatChangesMarkdown } from "../src/pricing/changes";
+import { MODELS } from "../src/lib/litellm";
+import {
+  diffPricing,
+  formatChangesMarkdown,
+  mergeFreshPrices,
+  type MergeWarning,
+} from "../src/pricing/changes";
 import { normalizePricing } from "../src/pricing/normalize";
-import { pricingProviders } from "../src/pricing/providers/index";
+import { fetchModelPricing } from "../src/pricing/providers/litellm";
 import { validateChange, validateDataset } from "../src/pricing/validate";
+import type { ModelPricing } from "../src/pricing/providers/types";
 import type {
   ModelEntry,
   PricingRow,
@@ -31,23 +38,35 @@ const providerOf = (model: string): string => {
   return (entry && providerName.get(entry.provider)) || "unknown";
 };
 
-const fetched = [];
-for (const provider of pricingProviders) {
-  console.log(`fetching pricing via ${provider.name}...`);
-  fetched.push(...(await provider.fetchPricing()));
+const fetched: ModelPricing[] = [];
+const fetchWarnings: MergeWarning[] = [];
+for (const m of MODELS) {
+  try {
+    fetched.push(await fetchModelPricing(m.id));
+  } catch (error) {
+    fetchWarnings.push({
+      model: m.id,
+      message: `fetch failed for ${m.id}: ${error instanceof Error ? error.message : String(error)}; kept last-known prices`,
+    });
+  }
 }
-console.log(`fetched ${fetched.length} model entries`);
+if (fetched.length === 0) {
+  console.error("could not fetch any model; aborting without changes.");
+  process.exit(1);
+}
+console.log(`fetched ${fetched.length}/${MODELS.length} model entries`);
 
 const fresh = normalizePricing(fetched, today);
-const changes = diffPricing(previous, fresh, today, providerOf);
+// Models missing from the fetch keep last-known prices with a warning
+// instead of failing the whole run (upstream entries do disappear).
+const { merged, warnings: staleWarnings } = mergeFreshPrices(previous, fresh);
+const failed = new Set(fetchWarnings.map((w) => w.model));
+const warnings = [
+  ...fetchWarnings,
+  ...staleWarnings.filter((w) => !failed.has(w.model)),
+];
 
-// Preserve the original updated_at on untouched rows so git history
-// stays a clean record of real price changes.
-const prevByKey = new Map(previous.map((r) => [`${r.model}|${r.type}`, r]));
-const merged = fresh.map((r) => {
-  const old = prevByKey.get(`${r.model}|${r.type}`);
-  return old && old.price_per_1m === r.price_per_1m ? old : r;
-});
+const changes = diffPricing(previous, merged, today, providerOf);
 
 const errors = validateDataset(providers, models, merged).filter(
   (i) => i.severity === "error",
@@ -60,7 +79,10 @@ if (errors.length > 0) {
 writeFileSync(join(root, "data", "pricing.json"), `${JSON.stringify(merged, null, 2)}\n`);
 
 const anomalies = changes.flatMap((c) => validateChange(c));
-const body = formatChangesMarkdown(changes);
+let body = formatChangesMarkdown(changes);
+if (warnings.length > 0) {
+  body += `\n\n## Fetch warnings\n\n${warnings.map((w) => `- ${w.message}`).join("\n")}\n`;
+}
 writeFileSync(join(root, "pricing-changes.md"), `${body}\n`);
 writeFileSync(
   join(root, ".pricing-meta.json"),
@@ -69,6 +91,7 @@ writeFileSync(
       has_changes: changes.length > 0,
       has_anomaly: anomalies.length > 0,
       change_count: changes.length,
+      warnings: warnings.map((w) => w.message),
       detected_at: today,
     },
     null,
@@ -82,6 +105,7 @@ if (changes.length === 0) {
   console.log(`${changes.length} change(s) detected:`);
   console.log(body);
 }
+for (const w of warnings) console.warn(`warning ${w.message}`);
 if (anomalies.length > 0) {
   for (const a of anomalies) console.warn(`warning [${a.code}] ${a.message}`);
 }

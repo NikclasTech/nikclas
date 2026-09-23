@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { MODELS } from "../../lib/litellm";
-import { LitellmProvider, parseCatalogEntry } from "./litellm";
+import { LitellmProvider, fetchModelPricing, parseCatalogEntry } from "./litellm";
 
 describe("parseCatalogEntry", () => {
   it("scales per-token costs to $/1M", () => {
@@ -123,5 +123,28 @@ describe("LitellmProvider.fetchPricing", () => {
       vi.fn(async () => ({ ok: false, status: 429 })),
     );
     await expect(new LitellmProvider().fetchPricing()).rejects.toThrow(/litellm 429/);
+  });
+
+  it("fetches a single model for resilient collection", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: string) => ({
+        ok: !url.includes("gone"),
+        status: 404,
+        json: async () => ({
+          input_cost_per_token: 1e-6,
+          output_cost_per_token: 2e-6,
+          max_input_tokens: 1000,
+          provider: "test",
+          supports_function_calling: true,
+          supports_vision: false,
+          supports_response_schema: false,
+          supports_prompt_caching: false,
+        }),
+      })),
+    );
+    const got = await fetchModelPricing("gpt-4o-mini");
+    expect(got).toMatchObject({ model: "gpt-4o-mini", inputPer1M: 1 });
+    await expect(fetchModelPricing("gone")).rejects.toThrow(/litellm 404 for gone/);
   });
 });

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { diffPricing, formatChangesMarkdown, isAnomaly } from "./changes";
+import { diffPricing, formatChangesMarkdown, isAnomaly, mergeFreshPrices } from "./changes";
 import type { PricingRow } from "./types";
 
 function row(model: string, type: "input" | "output", price: number): PricingRow {
@@ -55,6 +55,35 @@ describe("diffPricing", () => {
     const changes = diffPricing([], [row("new", "input", 1)], "2026-09-23", providerOf);
     expect(changes).toHaveLength(1);
     expect(changes[0]).toMatchObject({ kind: "added", previous: null });
+  });
+});
+
+describe("mergeFreshPrices", () => {
+  it("keeps the original date on untouched rows", () => {
+    const prev = [row("m", "input", 3)];
+    const { merged, warnings } = mergeFreshPrices(prev, [{ ...row("m", "input", 3), updated_at: "2026-09-23" }]);
+    expect(merged).toEqual(prev);
+    expect(warnings).toEqual([]);
+  });
+
+  it("takes the new row when the price moved", () => {
+    const { merged } = mergeFreshPrices([row("m", "input", 3)], [row("m", "input", 2.5)]);
+    expect(merged[0].price_per_1m).toBe(2.5);
+  });
+
+  it("keeps last-known rows with a warning for missing models", () => {
+    const prev = [row("gone", "input", 3)];
+    const { merged, warnings } = mergeFreshPrices(prev, []);
+    expect(merged).toEqual(prev);
+    expect(warnings).toEqual([
+      { model: "gone", message: "no live data for gone; kept last-known prices" },
+    ]);
+  });
+
+  it("appends brand-new models at the end", () => {
+    const { merged, warnings } = mergeFreshPrices([row("old", "input", 3)], [row("old", "input", 3), row("new", "input", 1)]);
+    expect(merged.map((r) => r.model)).toEqual(["old", "new"]);
+    expect(warnings).toEqual([]);
   });
 });
 
