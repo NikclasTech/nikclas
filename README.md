@@ -7,6 +7,11 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-6-3178FC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Pricing: LiteLLM](https://img.shields.io/badge/Pricing-LiteLLM_API-4DE3FF)](https://api.litellm.ai/)
 
+[![CI](https://github.com/NikclasTech/nikclas/actions/workflows/ci.yml/badge.svg)](https://github.com/NikclasTech/nikclas/actions/workflows/ci.yml)
+[![Security](https://github.com/NikclasTech/nikclas/actions/workflows/security.yml/badge.svg)](https://github.com/NikclasTech/nikclas/actions/workflows/security.yml)
+[![Pricing update](https://github.com/NikclasTech/nikclas/actions/workflows/pricing-update.yml/badge.svg)](https://github.com/NikclasTech/nikclas/actions/workflows/pricing-update.yml)
+[![Link check](https://github.com/NikclasTech/nikclas/actions/workflows/link-check.yml/badge.svg)](https://github.com/NikclasTech/nikclas/actions/workflows/link-check.yml)
+
 <img width="600" src="./public/banner.png" alt="Nikclas banner" />
 
 **Stop overpaying for tokens.** Nikclas compares $/1M token prices across
@@ -27,6 +32,8 @@ Read this in: [Espanol](docs/README.es.md) | [Francais](docs/README.fr.md) |
 - [8. Automation](#8-automation)
 - [9. Contributing](#9-contributing)
 - [10. License](#10-license)
+
+<img width="600" src="./docs/scsh.png" alt="Nikclas banner" />
 
 ## 1. Overview
 
