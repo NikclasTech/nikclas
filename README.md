@@ -182,7 +182,7 @@ without changing any component.
 | moonshot/kimi-k3 | Kimi | $3.00 | $15.00 | 1M |
 | claude-fable-5-1 | Anthropic | $10.00 | $50.00 | 1M |
 | gpt-6-astra | OpenAI | $10.00 | $50.00 | 922k |
-| claude-opus-4-1 | Anthropic | $15.00 | $75.00 | 200k |
+| claude-opus-5 | Anthropic | $5.00 | $25.00 | 1M |
 
 Median speeds shown on the cards are indicative static values; prices and
 context windows are the live fields.

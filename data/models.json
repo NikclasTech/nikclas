@@ -13,5 +13,5 @@
   { "id": "moonshot/kimi-k3", "name": "moonshot/kimi-k3", "provider": "moonshot", "context_tokens": 1048576 },
   { "id": "claude-fable-5-1", "name": "claude-fable-5-1", "provider": "anthropic", "context_tokens": 1000000 },
   { "id": "gpt-6-astra", "name": "gpt-6-astra", "provider": "openai", "context_tokens": 922000 },
-  { "id": "claude-opus-4-1", "name": "claude-opus-4-1", "provider": "anthropic", "context_tokens": 200000 }
+  { "id": "claude-opus-5", "name": "claude-opus-5", "provider": "anthropic", "context_tokens": 1000000 }
 ]

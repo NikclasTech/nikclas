@@ -46,7 +46,7 @@ export const MODELS: StaticSpec[] = [
   { id: "moonshot/kimi-k3", name: "moonshot/kimi-k3", vendor: "kimi", speed: "46 tok/s" },
   { id: "claude-fable-5-1", name: "claude-fable-5-1", vendor: "anthropic", speed: "38 tok/s" },
   { id: "gpt-6-astra", name: "gpt-6-astra", vendor: "openai", speed: "40 tok/s" },
-  { id: "claude-opus-4-1", name: "claude-opus-4-1", vendor: "anthropic", speed: "31 tok/s" },
+  { id: "claude-opus-5", name: "claude-opus-5", vendor: "anthropic", speed: "31 tok/s" },
 ];
 
 type DataModelRow = {
