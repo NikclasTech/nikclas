@@ -149,7 +149,7 @@ reactualisees depuis le catalogue LiteLLM a chaque chargement
 (requetes dedupliquees, puis cache 24h).
 
 Le plan gratuit de l'API autorise 100 requetes/jour par IP sans cle ; un
-chargement complet du catalogue de 13 modeles utilise 13 requetes.
+chargement complet du catalogue de 15 modeles utilise 15 requetes.
 
 ### Limite connue : CORS
 
@@ -168,9 +168,11 @@ composant.
 | gpt-4o-mini | OpenAI | $0.15 | $0.60 | 128k |
 | deepseek-chat | DeepSeek | $0.28 | $0.42 | 131k |
 | deepseek-v4-flash | DeepSeek | $0.30 | $1.20 | 1M |
+| deepinfra/nvidia/Llama-3.1-Nemotron-70B-Instruct | NVIDIA | $0.60 | $0.60 | 131k |
 | gemini-2.5-flash-lite | Google | $0.10 | $0.40 | 1M |
 | gpt-5.6-luna | OpenAI | $0.20 | $1.20 | 922k |
 | zai/glm-5.3 | z.ai | $1.40 | $4.40 | 1M |
+| qwencloud/qwen-max | Qwen | $1.60 | $6.40 | 31k |
 | xai/grok-4.5 | xAI | $2.00 | $6.00 | 500k |
 | gpt-4o | OpenAI | $2.50 | $10.00 | 128k |
 | claude-sonnet-4-6 | Anthropic | $3.00 | $15.00 | 1M |

@@ -145,7 +145,7 @@ das Kontextfenster. Die Metadaten werden bei jedem Laden aus dem
 LiteLLM-Katalog aktualisiert (dedupliziert, dann 24h Cache).
 
 Der API-Free-Tier erlaubt 100 Requests/Tag pro IP ohne Key; ein
-kompletter Ladevorgang des 13-Modelle-Katalogs kostet 13 Requests.
+kompletter Ladevorgang des 15-Modelle-Katalogs kostet 15 Requests.
 
 ### Bekannte Einschraenkung: CORS
 
@@ -163,9 +163,11 @@ weiterleitet, erhaelt Live-Daten ohne eine Komponente zu aendern.
 | gpt-4o-mini | OpenAI | $0.15 | $0.60 | 128k |
 | deepseek-chat | DeepSeek | $0.28 | $0.42 | 131k |
 | deepseek-v4-flash | DeepSeek | $0.30 | $1.20 | 1M |
+| deepinfra/nvidia/Llama-3.1-Nemotron-70B-Instruct | NVIDIA | $0.60 | $0.60 | 131k |
 | gemini-2.5-flash-lite | Google | $0.10 | $0.40 | 1M |
 | gpt-5.6-luna | OpenAI | $0.20 | $1.20 | 922k |
 | zai/glm-5.3 | z.ai | $1.40 | $4.40 | 1M |
+| qwencloud/qwen-max | Qwen | $1.60 | $6.40 | 31k |
 | xai/grok-4.5 | xAI | $2.00 | $6.00 | 500k |
 | gpt-4o | OpenAI | $2.50 | $10.00 | 128k |
 | claude-sonnet-4-6 | Anthropic | $3.00 | $15.00 | 1M |

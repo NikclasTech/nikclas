@@ -146,7 +146,7 @@ multiplies them by 1,000,000 to display $/1M tokens, and reads
 LiteLLM's catalog on every load (deduplicated, then cached 24h).
 
 The API free tier allows 100 requests/day per IP without a key; a fresh
-load of the full 13-model catalog uses 13 requests.
+load of the full 15-model catalog uses 15 requests.
 
 ### Known limitation: CORS
 
@@ -164,9 +164,11 @@ without changing any component.
 | gpt-4o-mini | OpenAI | $0.15 | $0.60 | 128k |
 | deepseek-chat | DeepSeek | $0.28 | $0.42 | 131k |
 | deepseek-v4-flash | DeepSeek | $0.30 | $1.20 | 1M |
+| deepinfra/nvidia/Llama-3.1-Nemotron-70B-Instruct | NVIDIA | $0.60 | $0.60 | 131k |
 | gemini-2.5-flash-lite | Google | $0.10 | $0.40 | 1M |
 | gpt-5.6-luna | OpenAI | $0.20 | $1.20 | 922k |
 | zai/glm-5.3 | z.ai | $1.40 | $4.40 | 1M |
+| qwencloud/qwen-max | Qwen | $1.60 | $6.40 | 31k |
 | xai/grok-4.5 | xAI | $2.00 | $6.00 | 500k |
 | gpt-4o | OpenAI | $2.50 | $10.00 | 128k |
 | claude-sonnet-4-6 | Anthropic | $3.00 | $15.00 | 1M |
